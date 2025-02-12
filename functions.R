@@ -101,7 +101,7 @@ process_replications_spaghetti <- function(data_stan, fit, draws = 100){
   #
   # Returns:
   # Dataframe of replications
-  
+
   t <- c(0, data_stan$t_rep)
   s_name <- c("Saccharomyces", "Schixosachararomyces")
   
@@ -118,11 +118,11 @@ process_replications_spaghetti <- function(data_stan, fit, draws = 100){
                    }))
   }
   
-  yrep <- extract(fit, pars = c("y1_rep", "y2_rep"))
+  yrep <- rstan::extract(fit, pars = c("y1_rep", "y2_rep"))
   rep_single <- lapply(1:2,
                        function(i){extract_draws(yrep[[i]], s_name[i], "Single")})
   
-  yrep <- extract(fit, pars = c("y12_rep"))[[1]]
+  yrep <- rstan::extract(fit, pars = c("y12_rep"))[[1]]
   rep_mixed <- lapply(1:2, function(i){extract_draws(yrep[, , i, ], s_name[i], "Mixed")})
   
   do.call(rbind, c(rep_single, rep_mixed))
